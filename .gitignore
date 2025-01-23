@@ -1,0 +1,33 @@
+# Sistema operativo
+.DS_Store        # macOS
+Thumbs.db        # Windows
+
+# Archivos temporales
+*.tmp
+*.log
+*.bak
+*.swp
+
+# Archivos y directorios de editores
+.vscode/         # Configuración de Visual Studio Code
+.idea/           # Configuración de IntelliJ/WebStorm
+*.sublime-workspace
+*.sublime-project
+
+# Node.js (si usas npm o frameworks)
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Archivos compilados o transitorios
+dist/            # Directorio de distribución
+build/           # Directorio de compilación
+*.map            # Mapas de fuente
+
+# Archivos de despliegue
+.env             # Variables de entorno
+*.zip            # Archivos comprimidos
+*.tar.gz
+
+# Creados
+/img
