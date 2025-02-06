@@ -2,14 +2,43 @@ let dom = $(document); //Pasa todo el HTML en una variable.
 
 dom.ready(iniciarEvento);
 
-
+var dineroActual = 100;
+var apuestaActual = 0;
 
 function iniciarEvento(){
     let rulet = $("#ruleta");
     rulet.click(CarreraCaballos);
+    actualizarDineroTotal();
+    actualizarValorApuesta();
 }
 
+function resetApuesta(){
+    apuestaActual = 0;
+    actualizarValorApuesta();
+}
 
+function aumentarApuesta(addApuesta){
+    apuestaActual += addApuesta;
+    actualizarValorApuesta();
+}
+
+function actualizarValorApuesta(){
+    $("#apuestaActual").text(apuestaActual);
+}
+
+function restarDinero(removeMoney){
+    dineroActual -= removeMoney
+    actualizarDineroTotal();
+}
+
+function sumarDinero(addMoney){
+    dineroActual += addMoney;
+    actualizarDineroTotal();
+}
+
+function actualizarDineroTotal(){
+    $("#actualMoney").text(dineroActual);
+}
 
 const table = document.getElementById('caballos');
 const button = document.getElementById('ruleta');
@@ -163,6 +192,3 @@ function CarreraCaballos() {
     }, speed);
 }
 button.addEventListener('click', spinRoulette);
-
-
-
