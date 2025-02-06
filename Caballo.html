@@ -7,76 +7,77 @@
     <link rel="stylesheet" href="caballo.css">
 </head>
 <body>
-    <table>
+
+    <table id="caballos" class="caballos">
         <tbody>
             <tr>
-                <td><button>Acción</button></td>
-                <td class="square" id="caballo11"></td>
+                <td><button class="aposCab" data-valor="0">Apostar</button></td>
+                <td class="square" id="caballo11"><img src="img/camino_caballo.png" class="responsive-image "></td>
                 <td class="square" id="caballo12"></td>
                 <td class="square" id="caballo13"></td>
                 <td class="square" id="caballo14"></td>
                 <td class="square" id="caballo15"></td>
                 <td class="square" id="caballo16"></td>
-                <td style="padding-left: 20px;"><div class="rectangle">Hola</div></td>
+                <td style="padding-left: 20px;"><div class="rectangle invisible"><span class="ganador_o_perdedor ">Hola</span></div></td>
             </tr>
             <tr>
-                <td><button>Acción</button></td>
+                <td><button class="aposCab" data-valor="1">Apostar</button></td>
                 <td class="square" id="caballo21"></td>
                 <td class="square" id="caballo22"></td>
                 <td class="square" id="caballo23"></td>
                 <td class="square" id="caballo24"></td>
                 <td class="square" id="caballo25"></td>
                 <td class="square" id="caballo26"></td>
-                <td style="padding-left: 20px;"><div class="rectangle">Hola</div></td>
+                <td style="padding-left: 20px;"><div class="rectangle invisible"><span class="ganador_o_perdedor ">Hola</span></div></td>
             </tr>
             <tr>
-                <td><button>Acción</button></td>
+                <td><button class="aposCab" data-valor="2">Apostar</button></td>
                 <td class="square" id="caballo31"></td>
                 <td class="square" id="caballo32"></td>
                 <td class="square" id="caballo33"></td>
                 <td class="square" id="caballo34"></td>
                 <td class="square" id="caballo35"></td>
                 <td class="square" id="caballo36"></td>
-                <td style="padding-left: 20px;"><div class="rectangle">Hola</div></td>
+                <td style="padding-left: 20px;"><div class="rectangle invisible"><span class="ganador_o_perdedor">Hola</span></div></td>
             </tr>
             <tr>
-                <td><button>Acción</button></td>
+                <td><button class="aposCab" data-valor="3">Apostar</button></td>
                 <td class="square" id="caballo41"></td>
                 <td class="square" id="caballo42"></td>
                 <td class="square" id="caballo43"></td>
                 <td class="square" id="caballo44"></td>
                 <td class="square" id="caballo45"></td>
                 <td class="square" id="caballo46"></td>
-                <td style="padding-left: 20px;"><div class="rectangle">Hola</div></td>
+                <td style="padding-left: 20px;"><div class="rectangle invisible"><span class="ganador_o_perdedor ">Hola</span></div></td>
             </tr>
             <tr>
-                <td><button>Acción</button></td>
+                <td><button class="aposCab" data-valor="4">Apostar</button></td>
                 <td class="square" id="caballo51"></td>
                 <td class="square" id="caballo52"></td>
                 <td class="square" id="caballo53"></td>
                 <td class="square" id="caballo54"></td>
                 <td class="square" id="caballo55"></td>
                 <td class="square" id="caballo56"></td>
-                <td style="padding-left: 20px;"><div class="rectangle">Hola</div></td>
+                <td style="padding-left: 20px;"><div class="rectangle invisible"><span class="ganador_o_perdedor ">Hola</span></div></td>
             </tr>
             <tr>
-                <td><button>Acción</button></td>
+                <td><button class="aposCab" data-valor="5">Apostar</button></td>
                 <td class="square" id="caballo61"></td>
                 <td class="square" id="caballo62"></td>
                 <td class="square" id="caballo63"></td>
                 <td class="square" id="caballo64"></td>
                 <td class="square" id="caballo65"></td>
                 <td class="square" id="caballo66"></td>
-                <td style="padding-left: 20px;"><div class="rectangle">Hola</div></td>
+                <td style="padding-left: 20px;"><div class="rectangle invisible"><span class="ganador_o_perdedor">Hola</span></div></td>
             </tr>
         </tbody>
     </table>
     
-    <div class="button-container">
-        <button>Presionar</button>
-        <button>Presionar</button>
-        <button>Presionar</button>
-        <button>Presionar</button>
+    <div class="button-container" id="apostador">
+        <button class="buttonAPOSTARX">1€</button>
+        <button class="buttonAPOSTARX">100€</button>
+        <button class="buttonAPOSTARX">1000€</button>
+        <button class="buttonAPOSTTODO" id="ruleta">TODOOO!!!</button>
     </div>
     
     <div class="rectangle-bet">
@@ -85,12 +86,18 @@
     <div class="rectangle-top">
         Dinero actual: <span id="actualMoney"> </span>€
     </div>
-    <div class="rectangle-wide">
+    <div class="rectangle-wide multiplier-container">
         Multiplicador: x<span id="multiplicador"> </span>
     </div>
     <button class="button-reset">RESET APUESTA</button>
 
+    <div class="wave-container">
+        <div class="wave1"></div>
+        <div class="wave2"></div>
+    </div>
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="caballo.js"></script>
+
 </body>
 </html>
