@@ -7,19 +7,23 @@ const PORC_NORMAL = 51, PORC_ESPECIAL = 91, PORC_MUYESPECIAL = 96, PORC_RARISIMO
 const spansGanador = Array.from(document.querySelectorAll('.ganador_o_perdedor')); // Guarda en el array todos los spans con la id "ganador_o_perdedor"
 const botonesApuesta = document.querySelectorAll('.aposCab'); // Guarda todos los botones con la clase 'aposCab'
 
-var dineroActual = 100; // Dinero del jugador, al principio se le otorga 100
+var dineroActual = 5000; // Dinero del jugador, al principio se le otorga 100
 var apuestaActual = 0; // Dinero que el jugador apuesta
 var multiplicador = 0; // Multiplicador de la apuestas
 var caballoApostado = 0; // Caballo por el que apuesta el jugador
 
 function iniciarEvento(){
     let rulet = $("#ruleta");
-    rulet.click(CarreraCaballos);
+    rulet.click(CarreraCaballos); // Empieza la carrera
     actualizarDineroTotal();
     actualizarValorApuesta();
     crearMultiplicador();
 
-    $(".aposCab").click(realizarApuesta);
+    $(".aposCab").click(realizarApuesta); // Controla las apuestas en los caballos
+    $("#uneuro").click(() => { actualizarDinero(1); });
+    $("#cieneuro").click(() => { actualizarDinero(100); });
+    $("#mileuro").click(() => { actualizarDinero(1000); });
+    $("#ruleta").click(() => { actualizarDinero(dineroActual); }); // Apostar todo
 }
 
 function resetApuesta(){
@@ -28,12 +32,11 @@ function resetApuesta(){
 }
 
 function aumentarApuesta(addApuesta){
-    if(dineroActual > apuestaActual + addApuesta){ // La apuesta solo aumentara si el jugador tiene el suficiente dinero para hacerla
+    if(dineroActual >= apuestaActual + addApuesta){
         apuestaActual += addApuesta;
     } else{
-        // Avisar jugador de que no tiene suficiente dinero
+        alert("No tienes suficiente dinero.");
     }
-    
     actualizarValorApuesta();
 }
 
@@ -41,14 +44,14 @@ function actualizarValorApuesta(){
     $("#apuestaActual").text(apuestaActual);
 }
 
-function restarDinero(removeMoney){
-    dineroActual -= removeMoney
-    actualizarDineroTotal();
-}
 
-function sumarDinero(addMoney){
-    dineroActual += addMoney;
-    actualizarDineroTotal();
+function actualizarDinero(cantidad){
+    if(dineroActual >= cantidad){
+        dineroActual -= cantidad;
+        actualizarDineroTotal();
+    } else {
+        alert("No tienes suficiente dinero.");
+    }
 }
 
 function actualizarDineroTotal(){
@@ -100,8 +103,9 @@ function actualizarGanadores(idGanador){
     }
 }
 
-function apuestaRealizada(){
-    console.log('Has pulsado el boton ${valor}');
+function realizarApuesta(){
+    let valor = $(this).data("valor");
+    console.log(`Apostaste por el caballo ${valor}`);
 }
 
 const table = document.getElementById('caballos');
