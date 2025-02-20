@@ -19,11 +19,10 @@ function iniciarEvento(){
     actualizarValorApuesta();
     crearMultiplicador();
 
-    $(".aposCab").click(realizarApuesta); // Controla las apuestas en los caballos
-    $("#uneuro").click(() => { actualizarDinero(1); });
-    $("#cieneuro").click(() => { actualizarDinero(100); });
-    $("#mileuro").click(() => { actualizarDinero(1000); });
-    $("#ruleta").click(() => { actualizarDinero(dineroActual); }); // Apostar todo
+    $(".aposCab").click(apostarPorCaballo); // Controla las apuestas en los caballos
+    $(".buttonAPOSTARX").click(apostar);
+    $(".button-reset").click(resetApuesta);
+    $("#ruleta").click(() => { actualizarDineroTotal(dineroActual); });
 }
 
 function resetApuesta(){
@@ -32,11 +31,7 @@ function resetApuesta(){
 }
 
 function aumentarApuesta(addApuesta){
-    if(dineroActual >= apuestaActual + addApuesta){
-        apuestaActual += addApuesta;
-    } else{
-        alert("No tienes suficiente dinero.");
-    }
+    apuestaActual += addApuesta;
     actualizarValorApuesta();
 }
 
@@ -44,14 +39,14 @@ function actualizarValorApuesta(){
     $("#apuestaActual").text(apuestaActual);
 }
 
+function restarDinero(removeMoney){
+    dineroActual -= removeMoney
+    actualizarDineroTotal();
+}
 
-function actualizarDinero(cantidad){
-    if(dineroActual >= cantidad){
-        dineroActual -= cantidad;
-        actualizarDineroTotal();
-    } else {
-        alert("No tienes suficiente dinero.");
-    }
+function sumarDinero(addMoney){
+    dineroActual += addMoney * multiplicador;
+    actualizarDineroTotal();
 }
 
 function actualizarDineroTotal(){
@@ -60,7 +55,7 @@ function actualizarDineroTotal(){
 
 function crearMultiplicador(){
     var porcentaje = 0;
-    porcentaje = getRandom(1, 101);
+    porcentaje = getRandom(1, 101); // Crea un numero entre 1 y 100
     tipoMultiplicador(porcentaje);
 }
 
@@ -103,9 +98,59 @@ function actualizarGanadores(idGanador){
     }
 }
 
-function realizarApuesta(){
-    let valor = $(this).data("valor");
-    console.log(`Apostaste por el caballo ${valor}`);
+function apostarPorCaballo(){
+    caballoApostado = $(this).data('valor');
+    console.log('Has pulsado un boton de apuesta. Apuesta: ' + caballoApostado);
+    if(apuestaActual > 0){
+        cerrarApuestas();
+        // CarreraCaballos();
+    } else{
+        $(this).text('Apuesta algo');
+        $(this).css('font-size', '80%');
+        setTimeout(() => {
+            $(this).text('Apostar');
+            $(this).css('font-size', '100%');
+        }, 2250);
+    }
+}
+
+function apostar(){
+    valorBoton = $(this).data('valor');
+    let textoOriginal = $(this).text();
+
+    if(valorBoton === 1001){
+        apuestaActual = 0; // Reseteamos la apuesta
+        valorBoton = dineroActual; // Hacemos que el valor de la apuesta sea igual a todo el dinero que tiene el jugador
+    }
+
+    if(dineroActual >= apuestaActual + valorBoton){ // La apuesta solo aumentara si el jugador tiene el suficiente dinero para hacerla
+        aumentarApuesta(valorBoton);
+    } else{
+        $(this).text('Dinero insuficiente');
+        
+        setTimeout(() => {
+            $(this).text(textoOriginal);
+        }, 2250);
+    }
+}
+
+function cerrarApuestas(){
+    for(let i = 0; i < botonesApuesta.length; i++){
+        botonesApuesta[i].disabled = true;
+        botonesApuesta[i].classList.add('botones-desabilitados');
+    }
+
+    setTimeout(() => {
+        abrirApuestas();
+    }, 3000);
+    
+}
+
+function abrirApuestas(){
+    for(let i = 0; i < botonesApuesta.length; i++){
+        botonesApuesta[i].disabled = false;
+        botonesApuesta[i].classList.remove('botones-desabilitados');
+    }
 }
 
 const table = document.getElementById('caballos');
