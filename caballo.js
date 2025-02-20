@@ -11,6 +11,7 @@ var dineroActual = 5000; // Dinero del jugador, al principio se le otorga 100
 var apuestaActual = 0; // Dinero que el jugador apuesta
 var multiplicador = 0; // Multiplicador de la apuestas
 var caballoApostado = 0; // Caballo por el que apuesta el jugador
+var dineroRestado = 0;
 
 function iniciarEvento(){
     let rulet = $("#ruleta");
@@ -32,6 +33,7 @@ function resetApuesta(){
 
 function aumentarApuesta(addApuesta){
     apuestaActual += addApuesta;
+    dineroRestado += addApuesta;
     actualizarValorApuesta();
 }
 
@@ -120,11 +122,14 @@ function apostar(){
 
     if(valorBoton === 1001){
         apuestaActual = 0; // Reseteamos la apuesta
+        sumarDinero(dineroRestado);
+        dineroRestado = 0;
         valorBoton = dineroActual; // Hacemos que el valor de la apuesta sea igual a todo el dinero que tiene el jugador
     }
 
     if(dineroActual >= apuestaActual + valorBoton){ // La apuesta solo aumentara si el jugador tiene el suficiente dinero para hacerla
         aumentarApuesta(valorBoton);
+        restarDinero(valorBoton);
     } else{
         $(this).text('Dinero insuficiente');
         
