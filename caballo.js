@@ -11,8 +11,8 @@ var dineroActual = 5000; // Dinero del jugador, al principio se le otorga 100
 var apuestaActual = 0; // Dinero que el jugador apuesta
 var multiplicador = 0; // Multiplicador de la apuestas
 var caballoApostado = 0; // Caballo por el que apuesta el jugador
-var caballoGanador = 7;
 var apuestaRealizada = false;
+var idGanador = 0;
 
 function iniciarEvento(){
     let rulet = $("#ruleta");
@@ -21,6 +21,7 @@ function iniciarEvento(){
     actualizarValorApuesta();
     crearMultiplicador();
 
+    $(".finCarrera").click(finalizarCarrera);
     $(".aposCab").click(apostarPorCaballo); // Controla las apuestas en los caballos
     $(".buttonAPOSTARX").click(apostar);
     $(".button-reset").click(resetApuesta);
@@ -96,15 +97,22 @@ function getRandom(min, max) {
 }
 
 function actualizarGanadores(idGanador){
-    for(var i = 0; i < spansGanador.length(); i++){
-        if(idGanador == i && caballoApostado == id){
-            spansGanador(i).textContent = 'Has ganado';
+    for(var i = 0; i < spansGanador.length; i++){
+        if(idGanador == i && caballoApostado == idGanador){
+            spansGanador[i].textContent = 'Has ganado';
         }
 
         if(caballoApostado != idGanador && caballoApostado == i){
-            spansGanador(i).textContent = 'Has perdido';
+            spansGanador[i].textContent = 'Has perdido';
+        } else if(caballoApostado != i){
+            spansGanador[i].textContent = '';
         }
     }
+    setTimeout(() => {
+        for(var i = 0; i < spansGanador.length; i++){
+            spansGanador[i].textContent = '';
+        }
+    }, 5000);
 }
 
 function apostarPorCaballo(){
@@ -130,11 +138,10 @@ function apostar(){
     if(valorBoton === 1001 && dineroActual > 0){
         sumarDinero(apuestaActual, false);
         apuestaActual = 0; // Reseteamos la apuesta
-        
         valorBoton = dineroActual; // Hacemos que el valor de la apuesta sea igual a todo el dinero que tiene el jugador
     }
 
-    if(dineroActual >= apuestaActual + valorBoton){ // La apuesta solo aumentara si el jugador tiene el suficiente dinero para hacerla
+    if(dineroActual >= valorBoton){ // La apuesta solo aumentara si el jugador tiene el suficiente dinero para hacerla
         aumentarApuesta(valorBoton);
         if(apuestaRealizada){
             restarDinero(valorBoton);
@@ -255,27 +262,27 @@ function CarreraCaballos() {
 
         if(caballo1 == 6){
             acabarCarrera = true;
-            caballoGanador = 0;
+            idGanador = 0;
         }
         if(caballo2 == 14){
             acabarCarrera = true;
-            caballoGanador = 1;
+            idGanador = 1;
         }
         if(caballo3 == 22){
             acabarCarrera = true;
-            caballoGanador = 2;
+            idGanador = 2;
         }
         if(caballo4 == 30){
             acabarCarrera = true;
-            caballoGanador = 3;
+            idGanador = 3;
         }
         if(caballo5 == 38){
             acabarCarrera = true;
-            caballoGanador = 4;
+            idGanador = 4;
         }
         if(caballo6 == 46){
             acabarCarrera = true;
-            caballoGanador = 5;
+            idGanador = 5;
         }
 
         
@@ -288,11 +295,13 @@ function CarreraCaballos() {
 }
 
 function finalizarCarrera(){
+    actualizarGanadores(idGanador);
 
-
-
-    if(caballoApostado == caballoGanador){ // Si el jugador gana la apuesta...
-        sumarDinero(apuestaActual, true);
+    if(caballoApostado == idGanador){ // Si el jugador gana la apuesta...
+        sumarDinero(apuestaActual, true); // Le damos lo apostado, pero multiplicado
+        sumarDinero(apuestaActual, false); // Le devolvemos lo apostado, pero normal
+        apuestaActual = 0; // Reseteamos la apuesta
+        actualizarValorApuesta();
     }
 
     crearMultiplicador();
