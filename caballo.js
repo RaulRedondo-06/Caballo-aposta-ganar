@@ -11,6 +11,7 @@ var dineroActual = 5000; // Dinero del jugador, al principio se le otorga 100
 var apuestaActual = 0; // Dinero que el jugador apuesta
 var multiplicador = 0; // Multiplicador de la apuestas
 var caballoApostado = 0; // Caballo por el que apuesta el jugador
+var caballoGanador = 7;
 var apuestaRealizada = false;
 
 function iniciarEvento(){
@@ -27,6 +28,7 @@ function iniciarEvento(){
 }
 
 function resetApuesta(){
+    sumarDinero(apuestaActual, false);
     apuestaActual = 0;
     actualizarValorApuesta();
 }
@@ -110,7 +112,7 @@ function apostarPorCaballo(){
     console.log('Has pulsado un boton de apuesta. Apuesta: ' + caballoApostado);
     if(apuestaActual > 0){
         cerrarApuestas();
-        // CarreraCaballos();
+        CarreraCaballos();
     } else{
         $(this).text('Apuesta algo');
         $(this).css('font-size', '80%');
@@ -154,9 +156,9 @@ function cerrarApuestas(){
         botonesApuesta[i].classList.add('botones-desabilitados');
     }
 
-    setTimeout(() => {
+    /*setTimeout(() => {
         abrirApuestas();
-    }, 3000);
+    }, 3000);*/
     
 }
 
@@ -253,27 +255,47 @@ function CarreraCaballos() {
 
         if(caballo1 == 6){
             acabarCarrera = true;
+            caballoGanador = 0;
         }
         if(caballo2 == 14){
             acabarCarrera = true;
+            caballoGanador = 1;
         }
         if(caballo3 == 22){
             acabarCarrera = true;
+            caballoGanador = 2;
         }
         if(caballo4 == 30){
             acabarCarrera = true;
+            caballoGanador = 3;
         }
         if(caballo5 == 38){
             acabarCarrera = true;
+            caballoGanador = 4;
         }
         if(caballo6 == 46){
             acabarCarrera = true;
+            caballoGanador = 5;
         }
+
         
         
         if (acabarCarrera) {
             clearInterval(interval); // Detener la carrera
+            finalizarCarrera();
         }
     }, speed);
+}
+
+function finalizarCarrera(){
+
+
+
+    if(caballoApostado == caballoGanador){ // Si el jugador gana la apuesta...
+        sumarDinero(apuestaActual, true);
+    }
+
+    crearMultiplicador();
+    abrirApuestas();
 }
 //8==============D
