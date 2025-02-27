@@ -1,3 +1,4 @@
+
 let dom = $(document); //Pasa todo el HTML en una variable.
 
 dom.ready(iniciarEvento);
