@@ -5,6 +5,7 @@ dom.ready(iniciarEvento);
 
 const MULT_NORMAL = 1; MULT_ESPECIAL = 2; MULT_MUYESPECIAL = 3, MULT_RARISIMO = 5, MULT_LOCURA = 10; // Constantes de los multiplicadores
 const PORC_NORMAL = 51, PORC_ESPECIAL = 91, PORC_MUYESPECIAL = 96, PORC_RARISIMO = 99; // Constantes para los porcentajes
+const TIEMPO_ESPERA_FIN_CARRERA = 2500;
 const spansGanador = Array.from(document.querySelectorAll('.ganador_o_perdedor')); // Guarda en el array todos los spans con la id "ganador_o_perdedor"
 const botonesApuesta = document.querySelectorAll('.aposCab'); // Guarda todos los botones con la clase 'aposCab'
 
@@ -101,15 +102,13 @@ function actualizarGanadores(idGanador){
 
         if(caballoApostado != idGanador && caballoApostado == i){
             spansGanador[i].textContent = 'Has perdido';
-        } else if(caballoApostado != i){
-            spansGanador[i].textContent = '';
         }
     }
     setTimeout(() => {
         for(var i = 0; i < spansGanador.length; i++){
             spansGanador[i].textContent = '';
         }
-    }, 5000);
+    }, TIEMPO_ESPERA_FIN_CARRERA);
 }
 
 function apostarPorCaballo(){
@@ -167,10 +166,12 @@ function cerrarApuestas(){
 }
 
 function abrirApuestas(){
-    for(let i = 0; i < botonesApuesta.length; i++){
-        botonesApuesta[i].disabled = false;
-        botonesApuesta[i].classList.remove('botones-desabilitados');
-    }
+    setTimeout(() => {
+        for(let i = 0; i < botonesApuesta.length; i++){
+            botonesApuesta[i].disabled = false;
+            botonesApuesta[i].classList.remove('botones-desabilitados');
+        }
+    }, TIEMPO_ESPERA_FIN_CARRERA);
 }
 
 
@@ -219,8 +220,9 @@ function startRace() {
             if (newLeft >= trackWidth && winner === null) {
                 // Si el corredor llega y no hay un ganador aún, lo designamos como el ganador
                 winner = index;
+                idGanador = winner;
                 raceInProgress = false; // Detenemos la carrera
-                console.log(`El corredor ${index + 1} ha ganado la carrera!`);
+                console.log(`El corredor ${idGanador} ha ganado la carrera!`);
                 finalizarCarrera();
             }
         });
@@ -229,12 +231,12 @@ function startRace() {
 
 function devolverCaballosAlInicio(){
     const runners = document.querySelectorAll('.runner');
-    console.log(runners.length);
-    setInterval(() => {
+    setTimeout(() => {
         runners.forEach((runners) => {
+            console.log("Reiniciando caballos...")
             runners.style.left = '0px'; // Aseguramos que todos comienzan en el inicio de la pista
         });
-    }, 2500);
+    }, TIEMPO_ESPERA_FIN_CARRERA);
     
 }
 
@@ -244,12 +246,11 @@ function finalizarCarrera(){
     if(caballoApostado == idGanador){ // Si el jugador gana la apuesta...
         sumarDinero(apuestaActual, true); // Le damos lo apostado, pero multiplicado
         sumarDinero(apuestaActual, false); // Le devolvemos lo apostado, pero normal
-        apuestaActual = 0; // Reseteamos la apuesta
-        actualizarValorApuesta();
     }
 
+    apuestaActual = 0;
+    actualizarValorApuesta();
     crearMultiplicador();
     devolverCaballosAlInicio();
     abrirApuestas();
 }
-//8==============D

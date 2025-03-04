@@ -53,6 +53,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .aposCab{
   display: flex;
+  margin-right: 5px;
   justify-content: center;
   align-items: center;
   width: 100px;
@@ -281,22 +282,6 @@ button:hover {
   align-items: center;
 }
 
-/* Líneas de inicio y meta */
-.line {
-  position: absolute;
-  width: 5px;
-  height: 50px;
-  background-color: #333;
-}
-
-.start {
-  left: 0;
-}
-
-.finish {
-  right: 0;
-}
-
 /* Estilos para el corredor */
 .runner {
   width: 75px;
@@ -305,7 +290,7 @@ button:hover {
   background-size: contain;
   position: absolute;
   left: 0;
-  transition: left 0.1s linear;
+  transition: left 0.1s ease;
 }
 
 #runner1 {
