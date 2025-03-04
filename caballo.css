@@ -34,8 +34,26 @@ body {
   display: flex;
 }
 
+input[type="range"] {
+  width: 100%; /* Hacer que el slider ocupe todo el ancho de la celda */
+  height: 10px;
+  background: #ddd;
+  border-radius: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  background: url("img/k.png");
+  background-size: cover;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-appearance: none;  /* Necesario para evitar los estilos predeterminados en WebKit */
+
+}
+
 .aposCab{
   display: flex;
+  margin-right: 5px;
   justify-content: center;
   align-items: center;
   width: 100px;
@@ -54,10 +72,9 @@ pointer-events: none;
 
 /* Estilo de las casillas */
 .square {
-  width: 100px;
+  width: 1000px;
   height: 100px;
   background-color: white;
-  border: 2px solid black;
   margin: 5px;
   border-collapse: collapse;
 }
@@ -252,3 +269,50 @@ button:hover {
   transform: scale(1.05);
 }
 
+
+/* Estilos para la pista */
+.track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  background-image: url("img/camino.png");
+  background-size: contain;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estilos para el corredor */
+.runner {
+  width: 75px;
+  height: 75px;
+  transform: scaleX(-1);
+  background-size: contain;
+  position: absolute;
+  left: 0;
+  transition: left 0.1s ease;
+}
+
+#runner1 {
+  background-image: url("img/caballo1.png");
+}
+
+#runner2 {
+  background-image: url("img/caballo2.png");
+}
+
+#runner3 {
+  background-image: url("img/caballo3.png");
+}
+
+#runner4 {
+  background-image: url("img/caballo4.png");
+}
+
+#runner5 {
+  background-image: url("img/caballo5.png");
+}
+
+#runner6 {
+  background-image: url("img/caballo6.png");
+}

@@ -5,6 +5,7 @@ dom.ready(iniciarEvento);
 
 const MULT_NORMAL = 1; MULT_ESPECIAL = 2; MULT_MUYESPECIAL = 3, MULT_RARISIMO = 5, MULT_LOCURA = 10; // Constantes de los multiplicadores
 const PORC_NORMAL = 51, PORC_ESPECIAL = 91, PORC_MUYESPECIAL = 96, PORC_RARISIMO = 99; // Constantes para los porcentajes
+const TIEMPO_ESPERA_FIN_CARRERA = 2500;
 const spansGanador = Array.from(document.querySelectorAll('.ganador_o_perdedor')); // Guarda en el array todos los spans con la id "ganador_o_perdedor"
 const botonesApuesta = document.querySelectorAll('.aposCab'); // Guarda todos los botones con la clase 'aposCab'
 
@@ -16,17 +17,13 @@ var apuestaRealizada = false;
 var idGanador = 0;
 
 function iniciarEvento(){
-    let rulet = $("#ruleta");
-    rulet.click(CarreraCaballos); // Empieza la carrera
     actualizarDineroTotal();
     actualizarValorApuesta();
     crearMultiplicador();
 
-    $(".finCarrera").click(finalizarCarrera);
     $(".aposCab").click(apostarPorCaballo); // Controla las apuestas en los caballos
     $(".buttonAPOSTARX").click(apostar);
     $(".button-reset").click(resetApuesta);
-    $("#ruleta").click(() => { actualizarDineroTotal(dineroActual); });
 }
 
 function resetApuesta(){
@@ -105,15 +102,13 @@ function actualizarGanadores(idGanador){
 
         if(caballoApostado != idGanador && caballoApostado == i){
             spansGanador[i].textContent = 'Has perdido';
-        } else if(caballoApostado != i){
-            spansGanador[i].textContent = '';
         }
     }
     setTimeout(() => {
         for(var i = 0; i < spansGanador.length; i++){
             spansGanador[i].textContent = '';
         }
-    }, 5000);
+    }, TIEMPO_ESPERA_FIN_CARRERA);
 }
 
 function apostarPorCaballo(){
@@ -121,7 +116,7 @@ function apostarPorCaballo(){
     console.log('Has pulsado un boton de apuesta. Apuesta: ' + caballoApostado);
     if(apuestaActual > 0){
         cerrarApuestas();
-        CarreraCaballos();
+        startRace();
     } else{
         $(this).text('Apuesta algo');
         $(this).css('font-size', '80%');
@@ -171,128 +166,78 @@ function cerrarApuestas(){
 }
 
 function abrirApuestas(){
-    for(let i = 0; i < botonesApuesta.length; i++){
-        botonesApuesta[i].disabled = false;
-        botonesApuesta[i].classList.remove('botones-desabilitados');
-    }
+    setTimeout(() => {
+        for(let i = 0; i < botonesApuesta.length; i++){
+            botonesApuesta[i].disabled = false;
+            botonesApuesta[i].classList.remove('botones-desabilitados');
+        }
+    }, TIEMPO_ESPERA_FIN_CARRERA);
 }
 
-const table = document.getElementById('caballos');
-const button = document.getElementById('ruleta');
 
-const tableSize = 8;
-const cells = Array.from(table.getElementsByTagName('td'));
+// Función para generar una velocidad aleatoria dentro de un rango
+function getRandomSpeed(min, max) {
+    return Math.random() * (max - min) + min;  // Devuelve un valor aleatorio entre min y max
+}
 
-const recorrido1 = [];
-const recorrido2 = [];
-const recorrido3 = [];
-const recorrido4 = [];
-const recorrido5 = [];
-const recorrido6 = [];
+// Función para iniciar la carrera
+function startRace() {
+    const trackWidth = document.querySelector('.track').offsetWidth - 75;
 
-for (let i = 1; i < tableSize-1; i++) recorrido1.push(i); 
-for (let i = 1; i < tableSize-1; i++) recorrido2.push(tableSize + i); 
-for (let i = 1; i < tableSize-1; i++) recorrido3.push(2 * tableSize + i); 
-for (let i = 1; i < tableSize-1; i++) recorrido4.push(3 * tableSize + i); 
-for (let i = 1; i < tableSize-1; i++) recorrido5.push(4 * tableSize + i); 
-for (let i = 1; i < tableSize-1; i++) recorrido6.push(5 * tableSize + i); 
+    // Recorremos todos los corredores (cada .runner tiene su propio id único)
+    const runners = document.querySelectorAll('.runner');
+    let speeds = []; // Guardamos las velocidades para cada corredor
+    let currentPositions = []; // Guardamos las posiciones actuales de los corredores
+    let raceInProgress = true; // Bandera que indica si la carrera está en curso
+    let winner = null; // Variable para almacenar el ganador
 
-let caballo1 = 1;
-let caballo2 = 9;
-let caballo3 = 17;
-let caballo4 = 25;
-let caballo5 = 33;
-let caballo6 = 41;
+    // Inicializamos las posiciones y velocidades de cada corredor
+    runners.forEach((runner, index) => {
+        speeds[index] = getRandomSpeed(2, 25);  // Asignamos una velocidad aleatoria inicial a cada corredor
+        currentPositions[index] = 0; // Todos comienzan en la posición 0
+        runner.style.left = '0px'; // Aseguramos que todos comienzan en el inicio de la pista
+    });
 
-let interval; 
-
-function CarreraCaballos() {
-    if (interval) clearInterval(interval); 
-
-    let acabarCarrera = false;
-    let speed = 100; 
-
-    let avanzar1;
-    let avanzar2;
-    let avanzar3;
-    let avanzar4;
-    let avanzar5;
-    let avanzar6;
-
-    interval = setInterval(() => {
-
-        avanzar1 = getRandom(0, 10);
-        avanzar2 = getRandom(0, 10);
-        avanzar3 = getRandom(0, 10);
-        avanzar4 = getRandom(0, 10);
-        avanzar5 = getRandom(0, 10);
-        avanzar6 = getRandom(0, 10);
-
-
-        if (avanzar1 <= 1){
-            cells[recorrido1[caballo1]].appendChild('<img src="img/camino_no_caballo.png">');
-            caballo1 = (caballo1 + 1);
-            cells[recorrido1[caballo1]].appendChild('<img src="img/camino_caballo.png">');
-        }
-        if (avanzar2 <= 1){
-            cells[recorrido2[caballo2]].replaceWith("src", "img/camino_no_caballo.png");
-            caballo2 = (caballo2 + 1);
-            cells[recorrido2[caballo2]].replaceWith("src", "img/camino_caballo.png");
-        }
-        if (avanzar3 <= 1){
-            cells[recorrido3[caballo3]].attr("src", "img/camino_no_caballo.png");
-            caballo3 = (caballo3 + 1);
-            cells[recorrido3[caballo3]].attr("src", "img/camino_caballo.png");
-        }
-        if (avanzar4 <= 1){
-            cells[recorrido4[caballo4]].setAttribute("src", "img/camino_no_caballo.png");
-            caballo4 = (caballo4 + 1);
-            cells[recorrido4[caballo4]].setAttribute("src", "img/camino_caballo.png");
-        }
-        if (avanzar5 <= 1){
-            cells[recorrido5[caballo5]].setAttribute("src", "img/camino_no_caballo.png");
-            caballo5 = (caballo5 + 1);
-            cells[recorrido5[caballo5]].setAttribute("src", "img/camino_caballo.png");
-        }
-        if (avanzar6 <= 1){
-            cells[recorrido6[caballo6]].setAttribute("src", "img/camino_no_caballo.png");
-            caballo6 = (caballo6 + 1);
-            cells[recorrido6[caballo6]].setAttribute("src", "img/camino_caballo.png");
+    // Empezamos el movimiento de los corredores
+    const interval = setInterval(() => {
+        if (!raceInProgress) {
+            clearInterval(interval); // Detenemos el intervalo cuando la carrera ha finalizado
+            return;
         }
 
+        // Recorremos todos los corredores
+        runners.forEach((runner, index) => {
+            // Actualizamos la velocidad de cada corredor cada segundo (puede ser más frecuente si se desea)
+            speeds[index] = getRandomSpeed(2, 25);  // Cada segundo cambia la velocidad del corredor
 
-        if(caballo1 == 6){
-            acabarCarrera = true;
-            idGanador = 0;
-        }
-        if(caballo2 == 14){
-            acabarCarrera = true;
-            idGanador = 1;
-        }
-        if(caballo3 == 22){
-            acabarCarrera = true;
-            idGanador = 2;
-        }
-        if(caballo4 == 30){
-            acabarCarrera = true;
-            idGanador = 3;
-        }
-        if(caballo5 == 38){
-            acabarCarrera = true;
-            idGanador = 4;
-        }
-        if(caballo6 == 46){
-            acabarCarrera = true;
-            idGanador = 5;
-        }
+            const currentLeft = currentPositions[index]; // Obtener la posición actual del corredor
+            const newLeft = currentLeft + speeds[index]; // Aumentar la posición según la velocidad
+            currentPositions[index] = newLeft; // Actualizamos la posición en el arreglo
 
-        
-        
-        if (acabarCarrera) {
-            clearInterval(interval); // Detener la carrera
-            finalizarCarrera();
-        }
-    }, speed);
+            runner.style.left = `${newLeft}px`; // Actualizamos la posición en la pista
+
+            // Verificamos si el corredor ha llegado a la meta
+            if (newLeft >= trackWidth && winner === null) {
+                // Si el corredor llega y no hay un ganador aún, lo designamos como el ganador
+                winner = index;
+                idGanador = winner;
+                raceInProgress = false; // Detenemos la carrera
+                console.log(`El corredor ${idGanador} ha ganado la carrera!`);
+                finalizarCarrera();
+            }
+        });
+    }, 100); // Actualiza la posición de los corredores cada segundo
+}
+
+function devolverCaballosAlInicio(){
+    const runners = document.querySelectorAll('.runner');
+    setTimeout(() => {
+        runners.forEach((runners) => {
+            console.log("Reiniciando caballos...")
+            runners.style.left = '0px'; // Aseguramos que todos comienzan en el inicio de la pista
+        });
+    }, TIEMPO_ESPERA_FIN_CARRERA);
+    
 }
 
 function finalizarCarrera(){
@@ -301,11 +246,11 @@ function finalizarCarrera(){
     if(caballoApostado == idGanador){ // Si el jugador gana la apuesta...
         sumarDinero(apuestaActual, true); // Le damos lo apostado, pero multiplicado
         sumarDinero(apuestaActual, false); // Le devolvemos lo apostado, pero normal
-        apuestaActual = 0; // Reseteamos la apuesta
-        actualizarValorApuesta();
     }
 
+    apuestaActual = 0;
+    actualizarValorApuesta();
     crearMultiplicador();
+    devolverCaballosAlInicio();
     abrirApuestas();
 }
-//8==============D
