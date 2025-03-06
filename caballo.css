@@ -316,3 +316,30 @@ button:hover {
 #runner6 {
   background-image: url("img/caballo6.png");
 }
+
+.gif-container {
+  position: absolute;
+  left: 5%; /* Ubicación centro-izquierda */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 250px; /* 2.5 veces el tamaño del GIF */
+  height: 250px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background: black; /* Fondo negro para simular borde */
+}
+
+.gif-container img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; /* Tamaño del GIF */
+  height: 100%;
+  object-fit: cover;
+}

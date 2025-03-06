@@ -8,6 +8,10 @@ const PORC_NORMAL = 51, PORC_ESPECIAL = 91, PORC_MUYESPECIAL = 96, PORC_RARISIMO
 const TIEMPO_ESPERA_FIN_CARRERA = 2500;
 const spansGanador = Array.from(document.querySelectorAll('.ganador_o_perdedor')); // Guarda en el array todos los spans con la id "ganador_o_perdedor"
 const botonesApuesta = document.querySelectorAll('.aposCab'); // Guarda todos los botones con la clase 'aposCab'
+const gif = document.getElementById("gif-img");
+const originalGif = gif.src;
+const sadGif = "img/cray_flower.gif"
+const HappyGif = "img/Happy_flower.gif"
 
 var dineroActual = 5000; // Dinero del jugador, al principio se le otorga 100
 var apuestaActual = 0; // Dinero que el jugador apuesta
@@ -98,16 +102,31 @@ function actualizarGanadores(idGanador){
     for(var i = 0; i < spansGanador.length; i++){
         if(idGanador == i && caballoApostado == idGanador){
             spansGanador[i].textContent = 'Has ganado';
+            cambiarGifHappy();
         }
 
         if(caballoApostado != idGanador && caballoApostado == i){
             spansGanador[i].textContent = 'Has perdido';
+            cambiarGifSad();
         }
     }
     setTimeout(() => {
         for(var i = 0; i < spansGanador.length; i++){
             spansGanador[i].textContent = '';
         }
+    }, TIEMPO_ESPERA_FIN_CARRERA);
+}
+
+function cambiarGifHappy() {
+    gif.src = HappyGif; // Cambia la imagen
+    setTimeout(() => {
+        gif.src = originalGif; // Vuelve a la original después de X tiempo
+    }, TIEMPO_ESPERA_FIN_CARRERA);
+}
+function cambiarGifSad() {
+    gif.src = sadGif; // Cambia la imagen
+    setTimeout(() => {
+        gif.src = originalGif; // Vuelve a la original después de X tiempo
     }, TIEMPO_ESPERA_FIN_CARRERA);
 }
 
