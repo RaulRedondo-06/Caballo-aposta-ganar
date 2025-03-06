@@ -3,7 +3,7 @@ let dom = $(document); //Pasa todo el HTML en una variable.
 
 dom.ready(iniciarEvento);
 
-const MULT_NORMAL = 1; MULT_ESPECIAL = 2; MULT_MUYESPECIAL = 3, MULT_RARISIMO = 5, MULT_LOCURA = 10; // Constantes de los multiplicadores
+const MULT_NORMAL = 2; MULT_ESPECIAL = 3; MULT_MUYESPECIAL = 5, MULT_RARISIMO = 10, MULT_LOCURA = 50; // Constantes de los multiplicadores
 const PORC_NORMAL = 51, PORC_ESPECIAL = 91, PORC_MUYESPECIAL = 96, PORC_RARISIMO = 99; // Constantes para los porcentajes
 const TIEMPO_ESPERA_FIN_CARRERA = 2500;
 const spansGanador = Array.from(document.querySelectorAll('.ganador_o_perdedor')); // Guarda en el array todos los spans con la id "ganador_o_perdedor"
@@ -264,7 +264,6 @@ function finalizarCarrera(){
 
     if(caballoApostado == idGanador){ // Si el jugador gana la apuesta...
         sumarDinero(apuestaActual, true); // Le damos lo apostado, pero multiplicado
-        sumarDinero(apuestaActual, false); // Le devolvemos lo apostado, pero normal
     }
 
     apuestaActual = 0;
